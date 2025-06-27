@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Configurações básicas -->
+    <meta charset="UTF-8"> <!-- Permite acentos e caracteres especiais -->
+    <title>Consulta DNS</title> <!-- Título que aparece na aba do navegador -->
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <!-- Conteúdo visível da página começa aqui -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+    <h1 style="text-align: center;"><n>Website to IP lookup</n></h1>
+
+    <div class="d-flex justify-content-center" class = 'input_text'>
+    <div class="input-group" style="width: 500px;">
+        <input id="site" type="text" class="form-control form-control-lg" placeholder="Url or domain name">
+        <button class="btn btn-primary" type="submit" onclick="consultasite()">Find IP addresses</button>
+    </div>
+    </div>
+
+    <h6 style="text-align: center;">Find all IP addresses with this website to IP checker. For example, try <br> <u>facebook.com</u> or <u>google.com</u> to view their IP addresses. You can also <br> enter a URL to get its IP addresses.</h6>
+
+    <!-- Rodapé -->
+    <footer>
+       <p>&copy; Aulas Gabs. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script> <!-- Caminho para seu arquivo JS -->
+</body>
+<script>
+    function consultasite(){
+        let site = document.getElementById("site").value;
+
+          // Caso não esteja preenchido
+            if (!site) {
+                alert("Please enter a website URL or domain name");
+                return;
+            }
+
+        fetch("http://127.0.0.1:3000/site/"+site)
+        .then((response) => response.json())
+        .then((json) => mostraResultado(json))
+        .catch(function (error) {
+        alert("Erro: " + error)
+    });
+        
+    }
+
+    function mostraResultado(json){
+        alert("O ip do site "+ json.Nome + " é - " + json.IP)
+    }
+</script>
+</html>

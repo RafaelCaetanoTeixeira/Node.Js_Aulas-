@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <title>Retorna HTML</title>
+    <link rel="stylesheet" href="estilo.css" />
+  </head>
+  <body class="BodyLeArquivo">
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+      crossorigin="anonymous"
+    ></script>
+
+    <h1 style="text-align: center"><n>Le Arquivo</n></h1>
+
+    <div class="d-flex justify-content-center">
+      <div class="input-group" style="width: 500px">
+        <input
+          id="arquivo"
+          type="text"
+          class="form-control form-control-lg"
+          placeholder="Nome do arquivo (ex: teste.txt)"
+        />
+        <button class="btn btn-primary" type="button" onclick="LeArquivo()">
+          Buscar
+        </button>
+      </div>
+    </div>
+
+    <h6 style="text-align: center">Coloque o nome do arquivo para ler ele!</h6>
+
+    <div
+      id="resultado"
+      class="mt-4 p-3 bg-light border rounded"
+      style="display: none; max-width: 90%; margin: 0 auto"
+    >
+      <h5 style="text-align: center">Conteúdo do Arquivo:</h5>
+      <pre id="conteudoArquivo" style="white-space: pre-wrap"></pre>
+    </div>
+
+    <footer>
+      <p class="DireitosAula">
+        &copy; Aulas Gabs. Todos os direitos reservados.
+      </p>
+      <img src="Imagens/shrek.png" alt="Descrição" class="ShrekIMG" />
+    </footer>
+
+    <script>
+      async function LeArquivo() {
+        const nomeArquivo = document.getElementById('arquivo').value.trim();
+        if (!nomeArquivo) {
+          alert('Por favor, digite o nome de um arquivo');
+          return;
+        }
+
+        try {
+          // IMPORTANTE: Requer servidor local (como Live Server)
+          const response = await fetch(`Arquivos/${nomeArquivo}`);
+
+          if (!response.ok) {
+            throw new Error(`Arquivo não encontrado: ${nomeArquivo}`);
+          }
+
+          const conteudo = await response.text();
+          mostraResultado(conteudo);
+        } catch (error) {
+          mostraResultado(
+            `ERRO: ${error.message}\n\nSolução:\n1. Crie uma pasta chamada "Arquivos" no mesmo local do seu HTML\n2. Coloque o arquivo dentro desta pasta\n3. Execute via Live Server (não abra diretamente no navegador)`
+          );
+        }
+      }
+
+      function mostraResultado(txt) {
+        const resultado = document.getElementById('resultado');
+        const conteudoArquivo = document.getElementById('conteudoArquivo');
+
+        conteudoArquivo.textContent = txt;
+        resultado.style.display = 'block';
+      }
+    </script>
+  </body>
+</html>
